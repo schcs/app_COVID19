@@ -479,9 +479,9 @@ server = function(input, output, session) {
       
       # updateSliderTextInput(session = session, inputId = "slider", label = "", choices = names(data_slider), selected = dt_fim)
       updateSliderInput(session = session, inputId = "slider", label = "", min = as.Date(dt_ini), max = as.Date(dt_fim), value = as.Date(dt_fim))
-      updateNumericInput(session = session, inputId = "show_video", label = NULL, value = 1L)
+      #updateNumericInput(session = session, inputId = "show_video", label = NULL, value = 1L)
     } else{
-      updateNumericInput(session = session, inputId = "show_video", label = NULL, value = 0L)
+      #updateNumericInput(session = session, inputId = "show_video", label = NULL, value = 0L)
     }
   })
   
