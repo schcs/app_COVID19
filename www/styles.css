@@ -157,3 +157,14 @@ hr {
     padding-top: 0px;
     margin-bottom: 0px;
 }
+
+.column {
+  float: left;
+  width: 50%;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}

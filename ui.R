@@ -202,7 +202,14 @@ shinyUI(
           ## Short term prediction
           uiOutput("title_ST"),
           # uiOutput("msg_ST"),
-          h5("Em desenvolvimento/Under development"),
+          HTML("<div class = 'row'>
+                  <div class = 'column'>
+                      <h5>Em desenvolvimento/Under development</h5>
+                  </div>
+                  <div class = 'column'>
+                      <a href = 'http://est.ufmg.br/covidlp/home/pt/blog/atualizacoes' style = 'float: right' target = '_blank''>Atualizações/Updates</a>
+                  </div>
+               </div>"),
           withSpinner(
             plotlyOutput("STpred")
           ),
@@ -257,7 +264,14 @@ shinyUI(
           ## Short term prediction
           uiOutput("title_LT"),
           # uiOutput("msg_LT"),
-          h5("Em desenvolvimento/Under development"),
+          HTML("<div class = 'row'>
+                  <div class = 'column'>
+                      <h5>Em desenvolvimento/Under development</h5>
+                  </div>
+                  <div class = 'column'>
+                      <a href = 'http://est.ufmg.br/covidlp/home/pt/blog/atualizacoes' style = 'float: right' target = '_blank''>Atualizações/Updates</a>
+                  </div>
+               </div>"),
           withSpinner(
             plotlyOutput("LTpred")
           ),
@@ -269,7 +283,14 @@ shinyUI(
           conditionalPanel(
             condition = "input.show_video!=0",
             h3("Evolução da previsão/Forecast evolution", style = "text-align:left; padding-top: 2%"),
-            h5(HTML("<b>Em desenvolvimento/Under development</b>")),
+            HTML("<div class = 'row'>
+                  <div class = 'column'>
+                      <h5>Em desenvolvimento/Under development</h5>
+                  </div>
+                  <div class = 'column'>
+                      <a href = 'http://est.ufmg.br/covidlp/home/pt/blog/atualizacoes' style = 'float: right' target = '_blank''>Atualizações/Updates</a>
+                  </div>
+               </div>"),
             plotlyOutput("LTpred_video"),
             HTML("<center>"),
             # sliderTextInput(inputId = "slider", label = "", grid = TRUE, choices = Sys.Date(), selected = Sys.Date(), animate = TRUE),
