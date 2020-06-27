@@ -44,7 +44,7 @@ covid19 <- read.csv(file.path(baseURLbr,"BrasilCov19.csv"), check.names=FALSE, s
 
   t = dim(Y)[1]
 
-br_pop <- read.csv("../R/pop/pop_BR.csv")
+br_pop <- read.csv("../pop/pop_BR.csv")
 pop <- br_pop$pop[which(br_pop$uf == "BR")]
 
 # u = uf[1]
