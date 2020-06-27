@@ -61,7 +61,7 @@ mod<- try(stan_model(file = model,verbose=FALSE))
 if(class(mod) == "try-error") stop("STAN DID NOT COMPILE")
 	
 #for ( s in 1:dim(uf)[1] ) {
-obj <- foreach( s = 1:dim(uf)[1] ) %dopar% {
+obj <- foreach( s = 1:(dim(uf)[1]-1) ) %dopar% {
 #obj <- foreach( s = 1:3 ) %dopar% {
   
   #source("jags_poisson.R")
@@ -288,7 +288,7 @@ obj <- foreach( s = 1:dim(uf)[1] ) %dopar% {
                        end.dat.upper = dat.high.end)
     
     muplot <- data.frame(date = dat.full, mu = mu50[1:(t+L0)])
-    list_out <- list( df_predict = df_predict, lt_predict=lt_predict, lt_summary=lt_summary, mu_plot = muplot, flag=flag)
+    list_out <- list( df_predict = df_predict, lt_predict=lt_predict, lt_summary=lt_summary, mu_plot = muplot, flag=flag, mod_chain_y = mod_chain_y, mod_chain_mu = mod_chain_mu)
     
     ### saveRDS
     results_directory = "/run/media/marcos/OS/UFMG/Pesquisa/Covid/app_COVID19/STpredictions/"
