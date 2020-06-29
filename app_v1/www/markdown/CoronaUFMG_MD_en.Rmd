@@ -284,3 +284,42 @@ $$\mu ( t ) = d + \frac{ a - d} {(  b + \exp { \{ - ct \} } )^f}$$
 
 The logistic curve is obtained by taking $d=0$ and $f=1$.
 
+
+### Operationalization of models
+
+Technical details can make a difference in practical application.
+
+- **Accumulated data X daily data**
+
+  It can be advantageous: model accumulated data $\Rightarrow$ model daily data
+
+  Cumulative average $\mu(t)$  $\Rightarrow$  daily average  $\mu(t) - \mu(t-1) \approx \mu'(t)$
+  
+  Conditional independence between days $\Rightarrow$ compatibility between the two models
+  
+  $X(1), ..., X(n) \stackrel{ind}{\sim} \ Poisson (\lambda (i)), \ i = 1, ..., n \quad \Rightarrow \quad \ \sum_i X(i) \sim \ Poisson \left( \sum_i \lambda (i) \right)$
+
+- **Weekly seasonality**
+
+  Some regions show a pattern that is repeated over the weeks.
+  
+  Example: weekends in Brazil show decreases in counts
+  
+  This pattern can be treated with deflators associated with these days
+  
+- **Aggregated vs. disaggregated data**
+
+  Units with multiple regions modeled by the sum of the counts in the regions
+  
+  Example: countries modeled by the sum of their states
+  
+- **Several waves**
+
+  Epidemics/pandemics can present with several waves of cases
+  
+  Logistic curve is used to represent each wave
+  
+  Multiple waves $\Rightarrow$ average given by sum of logistics
+  
+
+  

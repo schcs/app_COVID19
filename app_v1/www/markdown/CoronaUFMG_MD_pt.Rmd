@@ -255,3 +255,42 @@ Ela pode ser generalizada de várias formas. Uma possível forma da **logística
 $$\mu ( t ) = d + \frac{ a - d} {(  b + \exp { \{ - ct \} } )^f}$$
 
 A logística é obtida fazendo $d=0$ e $f=1$.
+
+
+### Operacionalização dos modelos
+
+Detalhes técnicos podem fazer diferença na aplicação prática.
+
+- **Dados acumulados X dados diários**
+
+  Pode ser vantajoso: modelar dados acumulados $\Rightarrow$ modelar dados diários
+
+  média acumulada $\mu(t)$  $\Rightarrow$  média diária  $\mu(t) - \mu(t-1) \approx \mu'(t)$
+  
+  Independência condicional entre dias $\Rightarrow$ compatibilidade entre as duas modelagens
+  
+  $X(1) , ... , X(n) \stackrel{ind}{\sim} \ Poisson (\lambda(i)) , \ i=1, ... , n \quad \Rightarrow \quad \ \sum_i X(i) \sim \ Poisson \left( \sum_i \lambda(i) \right)$
+
+- **Sazonalidade semanal**
+
+  Algumas regiões apresentam padrão que se repete ao longo das semanas.
+  
+  Exemplo: fins de semana no Brasil apresentam decréscimos nas contagens
+  
+  Esse padrão pode ser tratado com deflatores associados a esses dias
+  
+- **Dados agregados X desagregados**
+
+  Unidades com várias regiões modeladas pela soma das contagens nas regiões
+  
+  Exemplo: países modelados pela soma de seus estados
+  
+- **Várias ondas**
+
+  Epidemias/pandemias podem se apresentar com várias ondas de casos
+  
+  Curva logística é usada para representar cada onda
+  
+  Várias ondas $\Rightarrow$ média dada pela soma das logísticas
+  
+  

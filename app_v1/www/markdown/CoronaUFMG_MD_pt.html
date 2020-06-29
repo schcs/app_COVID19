@@ -370,6 +370,7 @@ summary {
 <div id="TOC">
 <ul>
 <li><a href="#modelando-a-pandemia-de-covid19">Modelando a pandemia de Covid19</a></li>
+<li><a href="#operacionalização-dos-modelos">Operacionalização dos modelos</a></li>
 </ul>
 </div>
 
@@ -523,6 +524,28 @@ Y(t) \sim N ( \mu (t) , \sigma^2 ), \qquad t = 1, 2, ...
 <p>Ela pode ser generalizada de várias formas. Uma possível forma da <strong>logística generalizada</strong> é <span class="math display">\[\mu ( t ) = d + \frac{ a - d} {(  b + \exp { \{ - ct \} } )^f}\]</span></p>
 <p>A logística é obtida fazendo <span class="math inline">\(d=0\)</span> e <span class="math inline">\(f=1\)</span>.</p>
 </div>
+</div>
+<div id="operacionalização-dos-modelos" class="section level3">
+<h3>Operacionalização dos modelos</h3>
+<p>Detalhes técnicos podem fazer diferença na aplicação prática.</p>
+<ul>
+<li><p><strong>Dados acumulados X dados diários</strong></p>
+<p>Pode ser vantajoso: modelar dados acumulados <span class="math inline">\(\Rightarrow\)</span> modelar dados diários</p>
+<p>média acumulada <span class="math inline">\(\mu(t)\)</span> <span class="math inline">\(\Rightarrow\)</span> média diária <span class="math inline">\(\mu(t) - \mu(t-1) \approx \mu&#39;(t)\)</span></p>
+<p>Independência condicional entre dias <span class="math inline">\(\Rightarrow\)</span> compatibilidade entre as duas modelagens</p>
+<p><span class="math inline">\(X(1) , ... , X(n) \stackrel{ind}{\sim} \ Poisson (\lambda(i)) , \ i=1, ... , n \quad \Rightarrow \quad \ \sum_i X(i) \sim \ Poisson \left( \sum_i \lambda(i) \right)\)</span></p></li>
+<li><p><strong>Sazonalidade semanal</strong></p>
+<p>Algumas regiões apresentam padrão que se repete ao longo das semanas.</p>
+<p>Exemplo: fins de semana no Brasil apresentam decréscimos nas contagens</p>
+<p>Esse padrão pode ser tratado com deflatores associados a esses dias</p></li>
+<li><p><strong>Dados agregados X desagregados</strong></p>
+<p>Unidades com várias regiões modeladas pela soma das contagens nas regiões</p>
+<p>Exemplo: países modelados pela soma de seus estados</p></li>
+<li><p><strong>Várias ondas</strong></p>
+<p>Epidemias/pandemias podem se apresentar com várias ondas de casos</p>
+<p>Curva logística é usada para representar cada onda</p>
+<p>Várias ondas <span class="math inline">\(\Rightarrow\)</span> média dada pela soma das logísticas</p></li>
+</ul>
 </div>
 
 
