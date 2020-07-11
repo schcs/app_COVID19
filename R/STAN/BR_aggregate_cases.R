@@ -1,6 +1,6 @@
 rm(list=ls())
 
-setwd("/run/media/marcos/OS/UFMG/Pesquisa/Covid/R/STAN")
+setwd("/home/marcosop/Covid/R/STAN")
 
 ###################################################################
 ### Packages
@@ -13,7 +13,7 @@ library(data.table)
 uf <- c("AC","AL","AM","AP","BA","CE","DF","ES","GO","MA","MG","MS","MT","PA",
         "PB","PE","PI","PR","RJ","RN","RO","RR","RS","SC","SE","SP","TO")
 
-dir_rds <- "/run/media/marcos/OS/UFMG/Pesquisa/Covid/app_COVID19/STpredictions" # <- DIRETORIO DO GITHUB
+dir_rds <- "/home/marcosop/Covid/app_COVID19/STpredictions" # <- DIRETORIO DO GITHUB
 
 baseURLbr = "https://raw.githubusercontent.com/covid19br/covid19br.github.io/master/dados"
 covid19 <- read.csv(file.path(baseURLbr,"BrasilCov19.csv"), check.names=FALSE, stringsAsFactors=FALSE) %>%
@@ -211,7 +211,7 @@ mu_sum <- mu_UF_df[, lapply(.SD, sum, na.rm=T), by=date]
     list_out <- list( df_predict = df_predict, lt_predict=lt_predict, lt_summary=lt_summary, mu_plot = muplot, flag=flag)
 
     ### saveRDS
-    results_directory = "/run/media/marcos/OS/UFMG/Pesquisa/Covid/app_COVID19/STpredictions/"
+    results_directory = "/home/marcosop/Covid/app_COVID19/STpredictions/"
     file_id <- colnames(Y)[i-2]
     saveRDS(list_out, file=paste0(results_directory,'Brazil_',file_id,'.rds'))
 

@@ -1,6 +1,6 @@
 rm(list=ls())
 
-setwd("/run/media/marcos/OS/UFMG/Pesquisa/Covid/R/STAN")
+setwd("/home/marcosop/Covid/R/STAN")
 
 ###################################################################
 ### Packages
@@ -58,7 +58,8 @@ br_pop <- read.csv("../pop/pop_BR.csv")
 ###### JAGS /STAN
 ###########################################################################
 #register cores
-registerDoMC(cores = detectCores()-1)    # Alternativa Linux
+#registerDoMC(cores = detectCores()-1)    # Alternativa Linux
+registerDoMC(cores = 27)    # Alternativa Linux
 
 #complie stan model
 model="stan_model_poisson_gen_fds.stan"    #modelo STAN 
@@ -106,7 +107,7 @@ obj <- foreach( s = 1:(dim(uf)[1]-1) ) %dopar% {
   params = c("a","b","c","f","beta_sunday", "beta_monday", "mu")
   # params = c("a","b","c","f", "mu")
   
-  burn_in= 2e3
+  burn_in= 5e3
   lag= 3
   sample_size= 1e3
   number_iterations= burn_in + lag*sample_size
@@ -296,14 +297,14 @@ obj <- foreach( s = 1:(dim(uf)[1]-1) ) %dopar% {
     list_out <- list( df_predict = df_predict, lt_predict=lt_predict, lt_summary=lt_summary, mu_plot = muplot, flag=flag, mod_chain_y = mod_chain_y, mod_chain_mu = mod_chain_mu)
     
     ### saveRDS
-    results_directory = "/run/media/marcos/OS/UFMG/Pesquisa/Covid/app_COVID19/STpredictions/"
+    results_directory = "/home/marcosop/Covid/app_COVID19/STpredictions/"
     # results_directory = 'C:/Users/ricar/Dropbox/covid19/R/predict/'
     file_id <- ifelse(uf$state[s]=='BR', colnames(Y)[3] , paste0(uf$state[s],'_',colnames(Y)[3],'e'))
     saveRDS(list_out, file=paste0(results_directory,'Brazil_',file_id,'.rds'))
     
     ### report
     source("mcmcplot_country.R")
-    report_directory = "/run/media/marcos/OS/UFMG/Pesquisa/Covid/app_COVID19/STpredictions/reports"
+    report_directory = "/home/marcosop/Covid/app_COVID19/STpredictions/reports"
     # report_directory = 'C:/Users/ricar/Dropbox/covid19/R/predict/report'
     #mcmcplot_country(mcmcout = mod_sim, parms = c(paste0("a[",t,"]"), paste0("b[",t,"]"), paste0("c[",t,"]")),
     mcmcplot_country(mcmcout = MCMCchains(object = mod_sim, mcmc.list = TRUE), parms = c("a", "b", "c", "f", "beta_sunday",

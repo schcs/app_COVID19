@@ -1,6 +1,6 @@
 rm(list=ls())
 
-setwd("/run/media/marcos/OS/UFMG/Pesquisa/Covid/R/STAN")
+setwd("/home/marcosop/Covid/R/STAN")
 
 ###################################################################
 ### Packages
@@ -13,7 +13,7 @@ library(data.table)
 uf <- c("AC","AL","AM","AP","BA","CE","DF","ES","GO","MA","MG","MS","MT","PA",
         "PB","PE","PI","PR","RJ","RN","RO","RR","RS","SC","SE","SP","TO")
 
-dir_rds <- "/run/media/marcos/OS/UFMG/Pesquisa/Covid/app_COVID19/STpredictions" # <- DIRETORIO DO GITHUB
+dir_rds <- "/home/marcosop/Covid/app_COVID19/STpredictions" # <- DIRETORIO DO GITHUB
 
 baseURLbr = "https://raw.githubusercontent.com/covid19br/covid19br.github.io/master/dados"
 covid19 <- read.csv(file.path(baseURLbr,"BrasilCov19.csv"), check.names=FALSE, stringsAsFactors=FALSE) %>%
@@ -33,12 +33,12 @@ covid19 <- read.csv(file.path(baseURLbr,"BrasilCov19.csv"), check.names=FALSE, s
           select(date, n, d, n_new, d_new, state) %>%
           arrange(date) %>% filter(date>='2020-02-01')
 
-  while(any(Y$d_new <0)){
-    pos <- which(Y$d_new <0)
+  while(any(Y$n_new <0)){
+    pos <- which(Y$n_new <0)
     for(j in pos){
-      Y$d_new[j-1] = Y$d_new[j] + Y$d_new[j-1]
-      Y$d_new[j] = 0
-      Y$d[j-1] = Y$d[j]
+      Y$n_new[j-1] = Y$n_new[j] + Y$n_new[j-1]
+      Y$n_new[j] = 0
+      Y$n[j-1] = Y$n[j]
     }
   }
 
@@ -121,8 +121,8 @@ mu_sum <- mu_UF_df[, lapply(.SD, sum, na.rm=T), by=date]
   NTC975=sum(highquant)+Y[[i-2]][t]
   
   #flag
-  cm <- pop * 0.08
-  ch <- pop * 0.12 
+  cm <- pop * 0.08 * 0.25
+  ch <- pop * 0.12 * 0.25
   flag <- 0 #tudo bem
   if (NTC500 > cm) {
     flag <- 2 #nao plotar
@@ -211,7 +211,7 @@ mu_sum <- mu_UF_df[, lapply(.SD, sum, na.rm=T), by=date]
     list_out <- list( df_predict = df_predict, lt_predict=lt_predict, lt_summary=lt_summary, mu_plot = muplot, flag=flag)
 
     ### saveRDS
-    results_directory = "/run/media/marcos/OS/UFMG/Pesquisa/Covid/app_COVID19/STpredictions/"
+    results_directory = "/home/marcosop/Covid/app_COVID19/STpredictions/"
     file_id <- colnames(Y)[i-2]
     saveRDS(list_out, file=paste0(results_directory,'Brazil_',file_id,'.rds'))
 

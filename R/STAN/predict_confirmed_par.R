@@ -3,7 +3,7 @@
 
 rm(list=ls())
 
-setwd("/run/media/marcos/OS/UFMG/Pesquisa/Covid/R/STAN")
+setwd("/home/marcosop/Covid/R/STAN")
 
 ###################################################################
 ### Packages
@@ -30,14 +30,15 @@ covid19_deaths <- loadData("time_series_covid19_deaths_global.csv", "deaths")
 covid19 <- covid19_confirm %>%  left_join(covid19_deaths)
 
 #countrylist = "Korea, South"
-countrylist <- c("Argentina","Australia","Belgium","Bolivia","Canada","Chile","China","Colombia","Ecuador","France","Germany","Greece", "India", "Ireland", "Italy", "Japan", "Korea, South", "Mexico", "Netherlands", "New Zealand", "Norway", "Peru", "Paraguay", "Poland", "Portugal", "Russia", "South Africa", "Spain","United Kingdom", "Uruguay", "Sweden", "Switzerland", "US", "Turkey", "Venezuela")                    
+countrylist <- c("Argentina","Australia","Belgium","Bolivia","Canada","Chile","China","Colombia","Ecuador","France","Germany","Greece", "India", "Ireland", "Italy", "Japan", "Korea, South", "Mexico", "Netherlands", "New Zealand", "Norway", "Peru", "Paraguay", "Poland", "Portugal", "Russia", "South Africa", "Spain","United Kingdom", "Uruguay", "Sweden", "Switzerland", "Turkey", "Venezuela")                    
 
 #countrylist <- c("Argentina","Bolivia","Canada","Chile","Colombia","Ecuador", "Greece", "India", "Japan", "Korea, South", "Mexico", "Peru", "Paraguay", "Poland", "Russia", "South Africa", "United Kingdom", "Uruguay", "Sweden", "US", "Venezuela")                    
 
 country_pop <- read.csv("../pop/pop_WR.csv")
 
 #register cores
-registerDoMC(cores = detectCores()-1)    # Alternativa Linux
+#registerDoMC(cores = detectCores()-1)    # Alternativa Linux
+registerDoMC(cores = 35)    # Alternativa Linux
 
 #complie stan model
 model="stan_model_poisson_gen.stan"    #modelo STAN 
@@ -101,7 +102,7 @@ L = 300
 #use static to provide initial values
   params = c("a","b","c","f","mu")
   
-  burn_in= 2e3
+  burn_in= 5e3
   lag= 3
   sample_size= 1e3
   number_iterations= burn_in + lag*sample_size
@@ -110,7 +111,7 @@ L = 300
   data_stan = list(y=Y[[i]], n=t, L=L, pop=pop, perPop=0.08)
   
   init <- list(
-    list(a = 100, b1 = log(1), c = .5, f = 1.01)
+    list(a = 1, b1 = log(1), c = .5, f = 1.01)
   )
 
   mod_sim<- try(sampling(object = mod, data = data_stan,
@@ -118,7 +119,7 @@ L = 300
                          chains = number_chains,
                          init = init,
                          iter = number_iterations, warmup = burn_in, thin = lag, 
-                         control = list(max_treedepth = 50, adapt_delta=0.999),
+                         control = list(max_treedepth = 15, adapt_delta=0.995),
                          verbose = FALSE, open_progress=FALSE, show_messages=FALSE))
 
 if(class(mod_sim) != "try-error"){
@@ -155,9 +156,9 @@ if(class(mod_sim) != "try-error"){
   
   #longterm
   L0 = 300
-  
-  #acha a curva de quantil 
-  {  if(Y[[2]][t] > 1000){
+
+    #acha a curva de quantil 
+    if(Y[[2]][t] > 1000){
       #acha a curva de quantil 
       lowquant <- colQuantiles(mod_chain_y[,1:L0], prob=.025)
       medquant <- colQuantiles(mod_chain_y[,1:L0], prob=.5)
@@ -170,16 +171,15 @@ if(class(mod_sim) != "try-error"){
       medquant <- (medquant-lag(medquant,default=0))[-1]
       highquant <- c(Y[[2]][t],colQuantiles(mod_chain_cumy[,1:L0], prob=.975))
       highquant <- (highquant-lag(highquant,default=0))[-1]
-   } }
-  
-  NTC25 =sum(lowquant)+Y[[2]][t]
-  NTC500=sum(medquant)+Y[[2]][t]
-  NTC975=sum(highquant)+Y[[2]][t]
-  
-  
-  ##flag
-  cm <- pop * 0.08
-  ch <- pop * 0.12 
+    }
+    
+    NTC25 =sum(lowquant)+Y[[2]][t]
+    NTC500=sum(medquant)+Y[[2]][t]
+    NTC975=sum(highquant)+Y[[2]][t]
+       
+    ##flag
+    cm <- pop * 0.08
+    ch <- pop * 0.12   
   flag <- 0 #tudo bem
   {if(NTC500 > cm) flag <- 2 #nao plotar
     else{if(NTC975 > ch){flag <- 1; NTC25 <- NTC975 <- NULL}}} #plotar so mediana
@@ -198,14 +198,14 @@ ifelse(length(fut$pos) > 0,
        mod_chain_mu <- cbind(as.matrix(mod_chain[mu_pos]),fut$mu.fut))
   mu50 <- apply(mod_chain_mu,2,quantile, probs=0.5)
   Dat500 <- dat.full[which.max(mu50[1:(t+L0)])]
-  
+
   q <- .99
   med.cum <- mu50#c(medquant[1]+Y[[2]][t],medquant[2:length(medquant)])
   med.cum <- colCumsums(as.matrix(med.cum))
   med.cum <- med.cum/med.cum[length(med.cum)]
   med.end <- which(med.cum - q > 0)[1]
   #dat.med.end <- dat.vec[med.end]
-  dat.med.end <- dat.full[med.end]
+  dat.med.end <- dat.full[med.end]  
   
   if(flag == 0){
     #definicao do pico usando a curva das medias
@@ -225,7 +225,7 @@ ifelse(length(fut$pos) > 0,
     
     Dat25 <- dat.full[dat.min]
     Dat975 <- dat.full[dat.max]
-    
+
     #calcula o fim da pandemia
     low.cum <- mu25 #c(lowquant[1]+Y[[2]][t],lowquant[2:length(lowquant)])
     low.cum <- colCumsums(as.matrix(low.cum))
@@ -264,13 +264,13 @@ ifelse(length(fut$pos) > 0,
   name.to.save <- gsub(" ", "-", country_name)
   
   ### saveRDS
-  results_directory = "/run/media/marcos/OS/UFMG/Pesquisa/Covid/app_COVID19/STpredictions/"
+  results_directory = "/home/marcosop/Covid/app_COVID19/STpredictions/"
   #results_directory = getwd()#'C:/Users/ricar/Dropbox/covid19/R/predict/'
   name.file <- paste0(results_directory,name.to.save,'_',colnames(Y)[2],'.rds')
   saveRDS(list_out, file=name.file)
   
   source("mcmcplot_country.R")
-  report_directory = "/run/media/marcos/OS/UFMG/Pesquisa/Covid/app_COVID19/STpredictions/reports"
+  report_directory = "/home/marcosop/Covid/app_COVID19/STpredictions/reports"
   #mcmcplot_country(mcmcout = mod_sim, parms = c(paste0("a[",t,"]"), paste0("b[",t,"]"), paste0("c[",t,"]")),
   mcmcplot_country(mcmcout = MCMCchains(object = mod_sim, mcmc.list = TRUE), parms = c("a", "b", "c", "f"),
                    dir = report_directory,
