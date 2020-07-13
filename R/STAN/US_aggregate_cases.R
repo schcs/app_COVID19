@@ -165,21 +165,19 @@ if(flag == 0){
   mu975 <- apply(mod_chain_mu,2,quantile, probs=.975)
   
   #posMax.q25 <- which.max(mu25[1:(t+L0)]) 
-  mu25.aux <- mu25[index_week] #changed
-  posMax.q25 <- which.max(mu25.aux) #changed
-  aux <- mu975[index_week] - mu25.aux[posMax.q25] #changed
-  aux2 <- aux[posMax.q25:length(aux)] #changed
+  posMax.q25 <- which.max(mu25) 
+  aux <- mu975 - mu25[posMax.q25] 
+  aux2 <- aux[posMax.q25:length(aux)] 
   val <- ifelse(length(aux2[aux2<0]) > 0, min(aux2[aux2>0]), aux[length(aux)])
   dat.max <- which(aux == val)
   
-  aux <- mu975[index_week] - mu25.aux[posMax.q25] #changed
+  aux <- mu975 - mu25.aux
   aux2 <- aux[1:posMax.q25]
   val <- min(aux2[aux2>0]) 
   dat.min <- which(aux == val)
   
-  dat.full.aux <- dat.full[index_week] #changed
-  Dat25 <- dat.full.aux[dat.min] #changed
-  Dat975 <- dat.full.aux[dat.max] #changed
+  Dat25 <- dat.full[dat.min]
+  Dat975 <- dat.full[dat.max] 
   
   #calcula o fim da pandemia
   low.cum <- mu25 #c(lowquant[1]+Y[[2]][t],lowquant[2:length(lowquant)])
