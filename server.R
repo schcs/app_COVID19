@@ -27,19 +27,29 @@ server = function(input, output, session) {
     country_name <- input$country
     state_name <- input$state
     
+    # if(country_name == "Brazil") {
+    #   d <- brData %>%
+    #     arrange(`Province/State`, date)
+    # } else { 
+    #   d <- allData %>%
+    #     filter(`Country/Region` == country_name)
+    # }
+    
     if(country_name == "Brazil") {
-      d <- brData %>%
-        arrange(`Province/State`, date)
-    } else { 
-      d <- allData %>%
-        filter(`Country/Region` == country_name)
+      d <- brData %>% arrange(`Province/State`, date)
+    } else {
+      if (country_name == "US") { 
+        d <- usData %>% arrange(`Province/State`, date)
+      } else { 
+        d <- allData %>% filter(`Country/Region` == country_name)
+      }
     }
     
     if(state_name != "<all>") {
       d <- d %>% 
         filter(`Province/State` == state_name) 
     } else {
-      if(country_name == "Brazil") {
+      if(country_name %in% c("Brazil","US")) {
         d <- d %>% 
           group_by(date) %>% 
           # summarise_at(c("NewConfirmed", "NewDeaths"), sum)
@@ -183,12 +193,16 @@ server = function(input, output, session) {
     if(input$country == "Brazil") {
       states <- brData %>% pull(`Province/State`)
     } else { 
-      if(input$tabset_covid == "tab_dados") {
-        states <- allData %>%
-          filter(`Country/Region` == input$country) %>% 
-          pull(`Province/State`)
+      if(input$country == "US") {
+        states <- usData %>% pull(`Province/State`)
       } else {
-        states <- NULL
+        if(input$tabset_covid == "tab_dados") {
+          states <- allData %>%
+            filter(`Country/Region` == input$country) %>% 
+            pull(`Province/State`)
+        } else {
+          states <- NULL
+        }
       }
     }
     

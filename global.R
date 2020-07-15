@@ -44,6 +44,15 @@ baseURL.BR <- "https://raw.githubusercontent.com/covid19br/covid19br.github.io/m
 # baseURL.BR <- "https://raw.githubusercontent.com/thaispaiva/app_COVID19/master/R/STAN"
 brData <- loadData.BR("EstadosCov19.csv")
 
+## Setup data source - US
+baseURL.US = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series"
+
+covid19_confirm <- loadData.US_cases("time_series_covid19_confirmed_US.csv", "confirmed")
+covid19_deaths <- loadData.US_deaths("time_series_covid19_deaths_US.csv", "deaths")
+usData <- left_join(covid19_confirm,covid19_deaths, by=c('state','date')) %>%
+  rename(`Province/State`=state, CumConfirmed=confirmed, CumDeaths=deaths) %>%
+  select(`Province/State`, CumConfirmed, CumDeaths, date)
+
 ##-- LOAD PREDICTION RESULTS ----
 files <- readfiles.repo()
 aux <- sub(pattern = '(\\_n.rds$)|(\\_d.rds$)', replacement = '', x = files)
