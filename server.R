@@ -49,7 +49,7 @@ server = function(input, output, session) {
       d <- d %>% 
         filter(`Province/State` == state_name) 
     } else {
-      if(country_name %in% c("Brazil","US")) {
+      if(country_name == "Brazil") {
         d <- d %>% 
           group_by(date) %>% 
           # summarise_at(c("NewConfirmed", "NewDeaths"), sum)
@@ -193,16 +193,16 @@ server = function(input, output, session) {
     if(input$country == "Brazil") {
       states <- brData %>% pull(`Province/State`)
     } else { 
-      if(input$country == "US") {
-        states <- usData %>% pull(`Province/State`)
-      } else {
-        if(input$tabset_covid == "tab_dados") {
+      if(input$tabset_covid == "tab_dados") {
+        if(input$country == "US") {
+          states <- usData %>% pull(`Province/State`)
+        } else {
           states <- allData %>%
             filter(`Country/Region` == input$country) %>% 
             pull(`Province/State`)
-        } else {
-          states <- NULL
         }
+      } else {
+        states <- NULL
       }
     }
     
