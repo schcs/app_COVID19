@@ -312,6 +312,10 @@ server = function(input, output, session) {
       Deaths = "Mortes acumuladas/Cumulated deaths"
     )
     
+    if((input$country %in% hide_countries_nc & input$metrics_ST == "Confirmed") | (input$country %in% hide_countries_d & input$metrics_ST == "Deaths")) {
+      return(NULL) 
+    }
+    
     plt <- plot_STpred(
       data = data(),
       predST_n = pred_n(),
@@ -383,6 +387,10 @@ server = function(input, output, session) {
       Confirmed = "Novos casos por dia/New cases per day",
       Deaths = "Novas mortes por dia/New deaths per day"
     )
+    
+    if((input$country %in% hide_countries_nc & input$metrics_LT == "Confirmed") | (input$country %in% hide_countries_d & input$metrics_LT == "Deaths")) {
+      return(NULL) 
+    }
     
     plt <- plot_LTpred(
       data = data(),
@@ -462,6 +470,25 @@ server = function(input, output, session) {
       write.csv(summary, con, row.names = FALSE)
     }
   )
+  
+  ##-- Hiding countries
+  ##-- + Hiding countries for new cases
+  output$msg_hide_ST = renderUI({
+    if((input$country %in% hide_countries_nc & input$metrics_ST == "Confirmed") | (input$country %in% hide_countries_d & input$metrics_ST == "Deaths")) {
+      tags$i("Resultados não disponíveis.", br(), "Results not available.", style = "text-align:left; color:red")
+    } else{
+      tags$h5("", style = "text-align:left")
+    }
+  })
+  
+  ##-- + Hiding countries for deaths
+  output$msg_hide_LT = renderUI({
+    if((input$country %in% hide_countries_nc & input$metrics_LT == "Confirmed") | (input$country %in% hide_countries_d & input$metrics_LT == "Deaths")) {
+      tags$i("Resultados não disponíveis.", br(), "Results not available.", style = "text-align:left; color:red")
+    } else{
+      tags$h5("", style = "text-align:left")
+    }
+  })
   
   ##-- + Prediction evolution
   data_pred_hist <- eventReactive(c(input$country, input$state, input$metrics_LT), {

@@ -55,8 +55,8 @@ shinyUI(
     fluidRow(
       column(width = 10, offset = 1,
              wellPanel(
-               h4("Selecione o país/estado e qual a variável que deseja investigar.", style = "text-align: center;"),
-               h4("Select a country/state and a variable to analyse.", style = "text-align: center;"),
+               h4("Selecione o país/estado que deseja investigar.", style = "text-align: center;"),
+               h4("Select a country/state to analyse.", style = "text-align: center;"),
                HTML("<center><a href = 'http://est.ufmg.br/covidlp/home/pt/' style = 'color: #00b1d8; text-decoration: underline;'>Sobre/About</a> | <a href = 'http://est.ufmg.br/covidlp/home/pt/metodologia' style = 'color: #00b1d8; text-decoration: underline;'>Metodologia/Methodology</a></center>"),
                # h5(sprintf("Última atualização/last update: %s", Sys.Date()), style = "text-align: center;"),
                # HTML("<center><a href = 'http://est.ufmg.br/covidlp/home/pt/' style = 'color: #00b1d8; text-decoration: underline;'>CovidLP website</a> | <a href = 'https://github.com/thaispaiva/app_COVID19' style = 'color: #00b1d8; text-decoration: underline;'>Source code</a> <br> <a href = 'http://est.ufmg.br/covidlp/home/pt/' style = 'color: #00b1d8; text-decoration: underline;'>Sobre/About</a> | <a href = 'http://est.ufmg.br/covidlp/home/pt/metodologia' style = 'color: #00b1d8; text-decoration: underline;'>Metodologia/Methodology</a></center>"),
@@ -106,6 +106,7 @@ shinyUI(
           
           ## Inputs
           HTML("<center>"),
+          HTML("<h4 style = 'text-align: center;'>Selecione o tipo de caso que deseja investigar.<br>Select the kind of data to analyze.</h4>"),
           div(
             class = "btn_div",
             shinyWidgets::awesomeCheckboxGroup(
@@ -162,6 +163,7 @@ shinyUI(
           
           ## Inputs
           HTML("<center>"),
+          HTML("<h4 style = 'text-align: center;'>Selecione o tipo de caso que deseja investigar.<br>Select the kind of data to analyze.</h4>"),
           div(
             class = "btn_div",
             radioGroupButtons(
@@ -210,6 +212,7 @@ shinyUI(
                       <a href = 'http://est.ufmg.br/covidlp/home/pt/blog/atualizacoes' style = 'float: right' target = '_blank''>Atualizações/Updates</a>
                   </div>
                </div>"),
+          uiOutput("msg_hide_ST"),
           withSpinner(
             plotlyOutput("STpred")
           ),
@@ -233,6 +236,7 @@ shinyUI(
           
           ## Inputs
           HTML("<center>"),
+          HTML("<h4 style = 'text-align: center;'>Selecione o tipo de caso que deseja investigar.<br>Select the kind of data to analyze.</h4>"),
           div(
             class = "btn_div",
             radioGroupButtons(
@@ -272,6 +276,7 @@ shinyUI(
                       <a href = 'http://est.ufmg.br/covidlp/home/pt/blog/atualizacoes' style = 'float: right' target = '_blank''>Atualizações/Updates</a>
                   </div>
                </div>"),
+          uiOutput("msg_hide_LT"),
           withSpinner(
             plotlyOutput("LTpred")
           ),
