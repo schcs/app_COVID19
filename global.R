@@ -73,5 +73,13 @@ countries_LTpred_orig <- countries_STpred_orig
 ## List of Brazil's states - LONG TERM
 statesBR_LTpred <- statesBR_STpred
 
+##-- List of countries to hide new cases
+hide_countries_nc <- list('Australia', 'Belgium', 'Canada', 'Greece', 'Japan', 'Korea, South',
+                         'Netherlands', 'Peru', 'Poland', 'Portugal', 'Spain', 'Switzerland', 
+                         'Uruguay', 'US')
+
+##-- List of countries to hide deaths
+hide_countries_d <- list('Australia', 'US')
+
 ## Read RDS files from github repository
 githubURL <- "https://github.com/thaispaiva/app_COVID19/raw/master/STpredictions"
