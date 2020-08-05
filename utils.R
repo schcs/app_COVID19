@@ -544,6 +544,8 @@ printDate <- function(date){
 
 ##-- Main function to load the data - GLOBAL
 loadData <- function(fileName, columnName) {
+  dir.create("cache", showWarnings = FALSE)
+  
   if(!file.exists(fileName) || minutesSinceLastUpdate(fileName) > 10) {
     data <- read.csv(file.path(baseURL, fileName), check.names = FALSE, stringsAsFactors = FALSE) %>%
       select(-Lat, -Long) %>% 
